@@ -118,6 +118,7 @@ hooks.Filters.ENV_TEMPLATE_TARGETS.add_items(
 
 # Force the rendering of scss files, even though they are included in a "partials" directory
 hooks.Filters.ENV_PATTERNS_INCLUDE.add_item(r"theme/lms/static/sass/partials/lms/theme/")
+hooks.Filters.ENV_PATTERNS_INCLUDE.add_item(r"theme/cms/static/sass/partials/cms/theme/")
 
 
 ########################################
@@ -180,13 +181,16 @@ def download_fonts(context):
 
     # Download fonts
     dest_dir = os.path.join(context.root, 'env', 'build', 'openedx', 'themes', 'theme', 'lms', 'static', 'fonts')
+    cms_dir = os.path.join(context.root, 'env', 'build', 'openedx', 'themes', 'theme', 'cms', 'static', 'fonts')
     dest_dir_mfe = os.path.join(context.root, 'env', 'plugins', 'mfe', 'build', 'mfe', 'brand-openedx', 'fonts')
 
     if "BRANDING_FONTS_URLS" in config:
         for font_url in config['BRANDING_FONTS_URLS']:
             filename = 'font.zip'
             Path(dest_dir).mkdir(parents=True, exist_ok=True)
+            Path(cms_dir).mkdir(parents=True, exist_ok=True)
             _download_file(url=font_url, dest_dir=dest_dir, filename=filename)
+            _download_file(url=font_url, dest_dir=cms_dir, filename=filename)
 
             # Unzip the file
             with zipfile.ZipFile(os.path.join(dest_dir, filename), 'r') as zip:
@@ -194,8 +198,12 @@ def download_fonts(context):
                 if 'mfe' in config.get('PLUGINS'):
                     zip.extractall(dest_dir_mfe)
                 zip.printdir()
-
                 os.remove(os.path.join(dest_dir, filename))
+
+            with zipfile.ZipFile(os.path.join(cms_dir, filename), 'r') as zip:
+                zip.extractall(cms_dir)
+                zip.printdir()
+                os.remove(os.path.join(cms_dir, filename))
 
     else:
         fmt.echo_alert("No BRANDING_FONTS_URLS configured")

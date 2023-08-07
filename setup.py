@@ -27,10 +27,10 @@ ABOUT = load_about()
 setup(
     name="tutor-contrib-branding",
     version=ABOUT["__version__"],
-    url="https://github.com/aulasneo/tutor-contrib-branding",
+    url="https://github.com/smart-stars/tutor-contrib-branding",
     project_urls={
-        "Code": "https://github.com/aulasneo/tutor-contrib-brandingh",
-        "Issue tracker": "https://github.com/aulasneo/tutor-contrib-branding/issues",
+        "Code": "https://github.com/smart-stars/tutor-contrib-branding",
+        "Issue tracker": "https://github.com/smart-stars/tutor-contrib-branding/issues",
     },
     license="AGPLv3",
     author="Andrés González",
